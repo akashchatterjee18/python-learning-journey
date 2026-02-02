@@ -151,4 +151,69 @@ deleted = np.delete(t,2)     #deletes the 2nd element
 print("array t after deletion:", deleted)
 k = np.delete(og,[0,0]) #removes the element in the 1st row and 1st column
 print("og",og)
+
 print("og after deletion",k)
+
+
+# Real World Data
+
+# data structure : [rest_id,2022,2023,2024,2025]
+sales_data = np.array([
+        [1, 150000, 180000, 220000, 250000],  # Paradise Biryani
+        [2, 120000, 140000, 160000, 110000],  # Beijing Bites
+        [3, 200000, 230000, 260000, 300000],  # Pizza Hub
+        [4, 180000, 210000, 250000, 270000],  # Burger Point
+        [5, 160000, 185000, 205000, 230000]   # Chai Point
+])
+print("Zomato sales analysis \n","\n Sales data shape",sales_data.shape,"\n Sample data for 1st 3 restaurent \n",sales_data[:3])
+print("Sample data for all restaurant without the rest id \n",sales_data[:,1:])
+print("Sample data for all restaurant without the rest id and without sales in 2022 \n",sales_data[:,2:])
+# Total sale per year
+print(np.sum(sales_data,axis=0))
+yearly_total = np.sum(sales_data[:,1:],axis=0)
+print(yearly_total)
+# Min sales
+min_sales1 = np.min(sales_data[:,1:], axis=0)   # per year
+min_sales2 = np.min(sales_data[:,1:], axis=1)   # per restaurant
+print(min_sales1)
+print(min_sales2)
+# Max sales
+max_sales1 = np.max(sales_data[:,1:], axis=0)   # per year
+max_sales2 = np.max(sales_data[:,1:], axis=1)   # per restaurant
+print(max_sales1)
+print(max_sales2)
+# Avg sales
+avg_sales1 = np.mean(sales_data[:,1:], axis=0)   # per year
+avg_sales2 = np.mean(sales_data[:,1:], axis=1)   # per restaurant
+print(avg_sales1)
+print(avg_sales2)
+monthly_avg = sales_data[:,1:] /12
+print(monthly_avg)
+# Cumulative sales
+cumsum1 = np.cumsum(sales_data[:,1:],axis=0)
+cumsum2 = np.cumsum(sales_data[:,1:],axis=1)
+print(cumsum1)      #year
+print(cumsum2)      #restaurant
+import matplotlib.pyplot as plt     # JUST TO PLOT THE DATA
+plt.figure(figsize=(8,6))
+plt.plot(np.mean(cumsum1,axis=0))
+plt.title("Avg Cumulative sales across all restaurants")
+plt.xlabel("years")
+plt.ylabel("sales")
+plt.grid(True)
+plt.show()
+
+# Vector Addition
+vector1 = np.array([1,2,3,4,5])
+vector2 = np.array([6,7,8,9,10])
+print("Vector Addition : \n", vector1 + vector2)
+print("Vector Multiplication : \n", vector1 * vector2)
+print("Dot Product : \n", np.dot(vector1,vector2))
+print("Angle btw the vectors : \n", np.arccos(np.dot(vector1,vector2) / (np.linalg.norm(vector1) * np.linalg.norm(vector2))))
+angle = np.arccos(np.dot(vector1,vector2) / (np.linalg.norm(vector1) * np.linalg.norm(vector2)))
+print(angle)
+
+# Vectorise
+restaurant_types = np.array(['biryani','chinese','pizza','burger','cafe'])
+vectorized_upper = np.vectorize(str.upper)
+print(vectorized_upper(restaurant_types))
