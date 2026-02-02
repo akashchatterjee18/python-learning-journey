@@ -4,7 +4,7 @@ import numpy as np
 arr_1d = np.array([1, 2, 3, 4, 5])
 print("1D array:",arr_1d)
 arr_2d = np.array([[1, 2, 3, 4, 5],[6, 7, 8, 9, 10]])
-print("1D array:\n",arr_2d)
+print("2D array:\n",arr_2d)
 
 
 py_list = [1,2,3]
@@ -217,3 +217,4 @@ print(angle)
 restaurant_types = np.array(['biryani','chinese','pizza','burger','cafe'])
 vectorized_upper = np.vectorize(str.upper)
 print(vectorized_upper(restaurant_types))
+
