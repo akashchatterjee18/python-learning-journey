@@ -155,3 +155,135 @@ left means merges the left value of the two dataframe provided.
 right means merges the right value of the two dataframe provided.
 """
 
+# Concatenation of 2 DataFrames
+df10 = pd.DataFrame({
+    'A' : ['A0','A1','A2'],
+    'B' : ['B0','B1','B2'],
+    'C' : ['C0','C1','C2']
+})
+df20 = pd.DataFrame({
+    'A' : ['A3','A4','A5'],
+    'B' : ['B3','B4','B5'],
+    'C' : ['C3','C4','C5']
+})
+print(df10)
+print(df20)
+print(pd.concat([df10,df20]))   # concatenation on the basis of columns
+print(pd.concat([df10,df20],axis=1)) # concatenation on the basis of rows
+
+
+# Joining 2 DataFrames
+df11 = pd.DataFrame({
+    'name':['Alice','Bob','Charlie']
+}, index=[1,2,3])
+df12 = pd.DataFrame({
+    'score':[85,90,93]
+}, index=[2,3,4])
+print(df11)
+print(df12)
+print(df11.join(df12))
+print(df12.join(df11))
+
+#* groupby and Aggregation
+data2 = {
+    'Category': ['A', 'B', 'A', 'B', 'A', 'B', 'A', 'B'],
+    'Store': ['S1', 'S1', 'S2', 'S2', 'S1', 'S2', 'S2', 'S1'],
+    'Sales': [100, 200, 150, 250, 120, 180, 200, 300],
+    'Quantity': [10, 15, 12, 18, 8, 20, 15, 25],
+    'Date': pd.date_range('2023-01-01', periods=8)
+}
+
+df21 = pd.DataFrame(data2)
+print(df21)
+
+# group by category and calc the sum of sales
+df22 = df21.groupby('Category') # Just categorises A and B
+print(df22)
+for i,j in df22:
+    print(i)
+    print(j)
+
+df23 = df21.groupby('Category')['Sales'].sum() # provides sum of sales for both the categories
+print(df23)
+
+# group by stores and calc the sum of sales
+df24 = df21.groupby('Store')['Sales'].sum()
+print(df24)
+
+# group by multiple columns and calc total sales
+df25 = df21.groupby(['Category','Store'])['Sales'].sum()
+df26 = df21.groupby(['Store','Category'])['Sales'].sum()
+print(df25)
+print(df26)
+
+
+# Aggregation
+"""mean,median,mode,var,std,min,max,count"""
+df27 = df21['Sales'].mean()
+df28 = df21['Sales'].median()
+df29 = df21['Sales'].mode()
+print(df27)
+print(df28)
+print(df29)
+df30 = df21['Sales'].agg(['mean','median','sum','var','min','max','std'])
+print(df30)
+""" mode dont work inside .agg() because it returns multiple values"""
+
+#* Pivot Tables
+# Creation of Pivot Tables
+data3 = {
+    'Date': pd.date_range('2023-01-01', periods=20),
+    'Product': ['A', 'B', 'C', 'D'] * 5,
+    'Region': ['East', 'West', 'North', 'South', 'East', 'West', 'North', 'South', 'East', 'West',
+               'North', 'South', 'East', 'West', 'North', 'South', 'East', 'West', 'North', 'South'],
+    'Sales': np.random.randint(100, 1000, 20),
+    'Units': np.random.randint(10, 100, 20),
+    'Rep': ['John', 'Mary', 'Bob', 'Alice', 'John', 'Mary', 'Bob', 'Alice', 'John', 'Mary',
+            'Bob', 'Alice', 'John', 'Mary', 'Bob', 'Alice', 'John', 'Mary', 'Bob', 'Alice']
+}
+df31 = pd.DataFrame(data3)
+print(df31)
+
+pivot1 = pd.pivot_table(df31,values='Sales',index='Region',columns='Product')       # mean asbe as agg = mean by default
+print(pivot1)
+
+pivot2 = pd.pivot_table(df31,values='Sales',index='Region',columns='Product',aggfunc='median')
+print(pivot2)
+
+pivot3 = pd.pivot_table(df31,values=['Sales','Units'],index='Region',columns='Product')
+print(pivot3)
+
+# Cross Tabs
+"""same as pivot table. but instead of agg we use count functions"""
+ct1 = pd.crosstab(df31['Region'],df31['Product'])
+print(ct1)
+
+
+#* Operations
+df32 = pd.DataFrame({
+    'A': [1, 2, 3, 4, 5],
+    'B': [10, 20, 30, 40, 50],
+    'C': [100, 200, 300, 400, 500]
+})
+print(df32)
+print(df32.shape)
+print(df32.columns)
+print(df32.info())
+print(df32.describe())
+print(df32['A']+10)
+
+# Squaring all the element in the colm B
+
+def square(x):
+    return x**2
+def cube(x):
+    return x**3
+
+print(df32['B'].apply(square))  # only provides required output without changing th dataframe
+
+
+df32['B'] = df32['B'].apply(square) # now the DataFrame will store the changed value of B
+print(df32)
+
+df32['D'] = df32['A'].apply(cube)   # creates a new column D
+print(df32)
